@@ -275,3 +275,8 @@ textarea { min-height: 150px; resize: vertical; }
   max-width: 720px; padding: 14px 18px; margin-bottom: 18px;
   border-left: 4px solid var(--green); background: var(--tint); border-radius: 0 8px 8px 0;
 }
+
+/* Tools section */
+.tool-card { display: flex; align-items: center; justify-content: space-between; gap: 32px; border-top: 4px solid var(--green); }
+.tool-card > div { max-width: 680px; }
+@media (max-width: 760px) { .tool-card { flex-direction: column; align-items: flex-start; } }

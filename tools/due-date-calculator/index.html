@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Due Date Calculator · Wit Science Consulting</title>
+<link rel="icon" type="image/png" href="../../assets/logo-icon.png">
+<style>
+  :root {
+    --blue: #215f9a;
+    --green: #47d45a;
+    --navy: #0b3041;
+    --bg: #f6f8fa;
+    --card: #ffffff;
+    --text: #0b3041;
+    --muted: #5a6b76;
+    --border: #d5dde3;
+    --warn-bg: #fff6e0;
+    --warn-border: #e0b44c;
+    --bad: #a3361f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    line-height: 1.5;
+  }
+  header { background: var(--navy); color: #fff; padding: 28px 16px; }
+  header .inner, main { max-width: 1100px; margin: 0 auto; }
+  header h1 { margin: 0 0 6px; font-size: 1.7rem; }
+  header p { margin: 0; color: #cfdbe3; }
+  main { padding: 24px 16px 48px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  h2 { font-size: 1.15rem; margin: 0 0 12px; color: var(--blue); }
+  .step { display: inline-block; width: 1.6em; height: 1.6em; border-radius: 50%; background: var(--blue); color: #fff; text-align: center; font-size: 0.9em; line-height: 1.6em; margin-right: 6px; }
+  label { font-weight: 600; display: block; margin-bottom: 6px; }
+  .hint { color: var(--muted); font-size: 0.92rem; margin: 4px 0 10px; }
+  input[type=date] {
+    font: inherit; padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; background: #fff; color: var(--text);
+  }
+  textarea {
+    width: 100%; min-height: 160px; font: 0.9rem ui-monospace, Consolas, monospace;
+    padding: 10px; border: 1px solid var(--border); border-radius: 6px; resize: vertical;
+  }
+  button {
+    font: inherit; font-weight: 600; cursor: pointer; border-radius: 6px; padding: 8px 16px;
+    border: 1px solid var(--blue); background: var(--blue); color: #fff;
+  }
+  button.secondary { background: #fff; color: var(--blue); }
+  button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--green); outline-offset: 1px; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .privacy { border-left: 4px solid var(--green); padding: 8px 12px; background: #eefaf0; border-radius: 4px; font-size: 0.95rem; }
+  .warn { border-left: 4px solid var(--warn-border); background: var(--warn-bg); padding: 8px 12px; border-radius: 4px; margin: 10px 0; }
+  .warn ul { margin: 6px 0 0; padding-left: 20px; }
+  .warn code { white-space: pre-wrap; word-break: break-word; }
+  .table-wrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { background: #eef3f8; color: var(--navy); }
+  td.date { white-space: nowrap; font-weight: 600; }
+  td.nowrap { white-space: nowrap; }
+  .unclear { color: var(--bad); font-weight: 600; }
+  .check { color: var(--bad); font-size: 0.85rem; }
+  .tag { font-size: 0.72rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; display: block; }
+  .hidden { display: none; }
+  kbd { font: 0.85em ui-monospace, Consolas, monospace; background: #eef3f8; border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; color: var(--navy); }
+  footer { color: var(--muted); font-size: 0.85rem; text-align: center; padding: 0 16px 32px; }
+  footer a { color: var(--blue); }
+  @media (max-width: 760px) {
+    table thead { display: none; }
+    table, tbody, tr, td { display: block; width: 100%; }
+    tr { border-bottom: 1px solid var(--border); padding: 8px 0; }
+    td { border: 0; padding: 2px 0; }
+    td::before { content: attr(data-label); display: block; font-size: 0.72rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="inner">
+    <p style="margin:0 0 14px"><a href="../../index.html#tools" style="color:#cfdbe3">&larr; Back to Wit Science Consulting</a></p>
+    <h1>Due Date Calculator</h1>
+    <p>Turn the due months of your EU project deliverables into real calendar dates.</p>
+  </div>
+</header>
+
+<main>
+  <p class="privacy"><strong>Your data stays on your computer.</strong> This page does all its work inside your browser. The table you paste is not sent or stored anywhere, and the page uses no tracking.</p>
+
+  <section class="card">
+    <h2><span class="step">1</span>Project start date</h2>
+    <label for="start">Start date of the project</label>
+    <input type="date" id="start">
+    <p class="hint">As stated in your Grant Agreement.</p>
+  </section>
+
+  <section class="card">
+    <h2><span class="step">2</span>Paste your deliverables table</h2>
+    <label for="paste">Deliverables table</label>
+    <ol class="hint" style="padding-left:20px">
+      <li>In your Grant Agreement (PDF, Word or Excel), select the whole deliverables table with your mouse.</li>
+      <li>Copy it with <kbd>Ctrl</kbd>+<kbd>C</kbd> (on a Mac: <kbd>Cmd</kbd>+<kbd>C</kbd>).</li>
+      <li>Click in the box below and paste it with <kbd>Ctrl</kbd>+<kbd>V</kbd> (on a Mac: <kbd>Cmd</kbd>+<kbd>V</kbd>).</li>
+    </ol>
+    <p class="hint">Please copy the text itself: a screenshot or picture of the table will not work. It doesn't matter if it looks messy after pasting.</p>
+    <p class="hint">The table should have these columns, in this order:
+      Deliverable No (e.g. D1.1) &middot; Deliverable Name &middot; Work Package No (e.g. WP3) &middot; Lead Beneficiary &middot; Type &middot; Dissemination level (PU or SEN) &middot; Due Date (e.g. 6, M6 or M06).</p>
+    <textarea id="paste" spellcheck="false" wrap="off"></textarea>
+    <div class="row" style="margin-top:10px">
+      <button type="button" class="secondary" id="example">Fill in an example</button>
+      <button type="button" class="secondary" id="clear">Clear</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="step">3</span>Your deliverables with dates</h2>
+    <p class="hint">Rule used: <strong>month N ends on the last day of month N</strong>, counting the month the project starts as month 1. Example: start 1 January 2026, month 6 &rarr; 30 June 2026. Always check against your Grant Agreement.</p>
+    <div id="messages"></div>
+    <div id="result-area" class="hidden">
+      <div class="row" style="margin-bottom:10px">
+        <label style="font-weight:400"><input type="checkbox" id="sort"> Sort by due date</label>
+        <button type="button" class="secondary" id="copy">Copy table</button>
+        <span id="copy-status" class="hint" aria-live="polite"></span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Deliverable No</th>
+              <th>Deliverable Name</th>
+              <th>Work Package No</th>
+              <th>Lead Beneficiary</th>
+              <th>Type</th>
+              <th>Dissemination level</th>
+              <th>Due month<span class="tag">as pasted</span></th>
+              <th>Due date<span class="tag">calculated</span></th>
+            </tr>
+          </thead>
+          <tbody id="result"></tbody>
+        </table>
+      </div>
+    </div>
+    <p id="empty" class="hint">Enter a start date and paste a table to see the dates.</p>
+  </section>
+</main>
+
+<footer>
+  A free tool by <a href="../../index.html">Wit Science Consulting</a> &middot; <a href="../../impressum.html">Impressum</a> &middot; <a href="../../datenschutz.html">Privacy</a>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var startEl = document.getElementById("start");
+  var pasteEl = document.getElementById("paste");
+  var sortEl = document.getElementById("sort");
+  var messagesEl = document.getElementById("messages");
+  var resultArea = document.getElementById("result-area");
+  var resultBody = document.getElementById("result");
+  var emptyEl = document.getElementById("empty");
+  var copyStatus = document.getElementById("copy-status");
+
+  var shownRows = [];
+
+  var MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July",
+    "August", "September", "October", "November", "December"];
+
+  // ---------- Recognising the fixed columns ----------
+  //
+  // The pasted text is flattened into one line (tabs, line breaks and cell
+  // borders all become single spaces), because pasting from a PDF scatters
+  // the cells. Each deliverable is then found by its fixed column order:
+  //
+  //   Deliverable No   D + number, e.g. D1.1
+  //   Deliverable Name free text, up to the Work Package No
+  //   Work Package No  WP + number, e.g. WP3
+  //   Lead Beneficiary + Type   free text up to the Dissemination level
+  //   Dissemination    PU or SEN (optionally followed by "- Public" / "- Sensitive")
+  //   Due Date         a number, M + number, or M0 + number
+  //
+  // Text that doesn't fit this pattern is never guessed at: it is listed
+  // under "Not recognised" so the user can see what was skipped.
+
+  var ROW = new RegExp(
+    "(D\\s?\\d+(?:\\.\\d+)*)" +                       // 1 Deliverable No
+    // Name and lead/type may not run across a PU/SEN, so a row with a
+    // missing column is reported as not recognised instead of being glued
+    // to the next row.
+    "\\s+((?:(?!\\s(?:PU|SEN)\\b).)+?)" +              // 2 Deliverable Name
+    "\\s+(WP\\s?\\d+)" +                              // 3 Work Package No
+    "\\s+((?:(?!\\s(?:PU|SEN)\\b|\\sD\\s?\\d+\\.\\d+\\s).)+?)" + // 4 Lead Beneficiary + Type
+    "\\s+(PU|SEN)\\b" +                               // 5 Dissemination level
+    "((?:\\s*[-\u2013\u2014:]?\\s*(?:Public|Sensitive)\\b)?)" + // 6 its label, if any
+    "\\s*(?:[-\u2013\u2014]\\s*)?" +
+    "(M\\s?\\d{1,3}|\\d{1,3})\\b",                    // 7 Due Date
+    "g");
+
+  // Words that start the Type column (official codes and plain words).
+  var TYPE_START = /^(R|DEM|DEC|DATA|DMP|ETHICS|OTHER|Document|Report|Website|Websites|Video|Videos|Workshop|Other)\b/i;
+
+  // The header row, possibly repeated on every PDF page.
+  var HEADER = /Deliverable\s+No\.?\s+Deliverable\s+Name\s+Work\s+Package\s+No\.?\s+Lead\s+Beneficiary\s+Type\s+Dissemination\s+[Ll]evel\s+Due\s+Date(?:\s*\((?:in\s+)?months?\))?/gi;
+
+  function flatten(text) {
+    return String(text || "").replace(/\s+/g, " ").trim();
+  }
+
+  // Split "1 - WSC R — Document, report" into lead "1 - WSC" and type "R — Document, report".
+  function splitLeadAndType(s) {
+    var tokens = s.split(" ");
+    for (var i = 1; i < tokens.length; i++) {
+      if (TYPE_START.test(tokens[i]) && !/^[-\u2013\u2014]$/.test(tokens[i - 1])) {
+        return { lead: tokens.slice(0, i).join(" "), type: tokens.slice(i).join(" "), typeFound: true };
+      }
+    }
+    return { lead: s, type: "", typeFound: false };
+  }
+
+  function codeKey(s) { return s.replace(/\s+/g, ""); }
+
+  function parseDeliverables(text) {
+    var flat = flatten(text).replace(HEADER, " ");
+    flat = flatten(flat);
+    var found = [], skipped = [], last = 0, m;
+    ROW.lastIndex = 0;
+    while ((m = ROW.exec(flat)) !== null) {
+      var between = flat.slice(last, m.index).trim();
+      if (between) skipped.push(between);
+      last = ROW.lastIndex;
+
+      var checks = [];
+      var name = m[2].trim();
+      if (/\bD\s?\d+\.\d+\b/.test(name) && /\b(WP\s?\d+|PU|SEN)\b/.test(name)) {
+        checks.push("Name contains another deliverable's details: two rows may have run together.");
+      }
+      var lt = splitLeadAndType(m[4].trim());
+      if (/\bD\s?\d+\.\d+\b/.test(m[4])) {
+        checks.push("Lead beneficiary / type contains another deliverable number: two rows may have run together.");
+      } else if (!lt.typeFound) {
+        checks.push("Type not recognised: lead beneficiary and type are shown together.");
+      } else if (lt.lead.split(" ").length > 4) {
+        checks.push("Lead beneficiary looks unusually long: the name may contain a work package number.");
+      }
+
+      found.push({
+        order: found.length,
+        code: codeKey(m[1]),
+        name: name,
+        wp: codeKey(m[3]),
+        lead: lt.lead,
+        type: lt.type,
+        diss: (m[5] + m[6]).trim(),
+        due: m[7].replace(/\s+/g, ""),
+        checks: checks
+      });
+    }
+    var rest = flat.slice(last).trim();
+    if (rest) skipped.push(rest);
+
+    // Same deliverable number twice?
+    var seen = {};
+    found.forEach(function (r) {
+      if (seen[r.code]) r.checks.push("This deliverable number appears more than once.");
+      seen[r.code] = true;
+    });
+    return { rows: found, skipped: skipped };
+  }
+
+  // ---------- Due month and date rules ----------
+
+  // Accepts "6", "06", "M6", "M06". Anything else is unclear.
+  function readMonth(s) {
+    var m = /^M?0*(\d{1,3})$/i.exec(String(s).trim());
+    if (!m) return null;
+    var n = parseInt(m[1], 10);
+    return n >= 1 ? n : null;
+  }
+
+  // Last day of month N, where month 1 = the month the project starts.
+  function dueDate(start, n) {
+    return new Date(start.getFullYear(), start.getMonth() + n, 0);
+  }
+
+  function formatDate(d) {
+    return d.getDate() + " " + MONTH_NAMES[d.getMonth()] + " " + d.getFullYear();
+  }
+
+  function isoDate(d) {
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+
+  // ---------- Showing the result ----------
+
+  function addWarning(title, items) {
+    var box = document.createElement("div");
+    box.className = "warn";
+    var p = document.createElement("div");
+    p.textContent = title;
+    box.appendChild(p);
+    if (items && items.length) {
+      var ul = document.createElement("ul");
+      items.forEach(function (t) {
+        var li = document.createElement("li");
+        var c = document.createElement("code");
+        c.textContent = t.length > 300 ? t.slice(0, 300) + " …" : t;
+        li.appendChild(c);
+        ul.appendChild(li);
+      });
+      box.appendChild(ul);
+    }
+    messagesEl.appendChild(box);
+  }
+
+  function cell(tr, text, label, cls) {
+    var td = document.createElement("td");
+    td.textContent = text;
+    td.setAttribute("data-label", label);
+    if (cls) td.className = cls;
+    tr.appendChild(td);
+    return td;
+  }
+
+  function render() {
+    messagesEl.textContent = "";
+    resultBody.textContent = "";
+    shownRows = [];
+
+    var text = pasteEl.value;
+    var start = startEl.value ? new Date(startEl.value + "T00:00:00") : null;
+
+    if (!text.trim()) {
+      resultArea.classList.add("hidden");
+      emptyEl.classList.remove("hidden");
+      emptyEl.textContent = start ? "Paste your deliverables table to see the dates." : "Enter a start date and paste a table to see the dates.";
+      return;
+    }
+
+    var parsed = parseDeliverables(text);
+    var rows = parsed.rows;
+
+    if (!rows.length) {
+      resultArea.classList.add("hidden");
+      emptyEl.classList.remove("hidden");
+      emptyEl.textContent = "No deliverables recognised. Each row needs, in this order: a Deliverable No (D1.1), a name, a Work Package No (WP1), the lead beneficiary and type, PU or SEN, and a due month.";
+      return;
+    }
+
+    if (!start) {
+      addWarning("Enter the project start date to calculate the due dates.");
+    } else if (start.getDate() !== 1) {
+      addWarning("Your start date is not the 1st of a month. The dates below count " +
+        MONTH_NAMES[start.getMonth()] + " " + start.getFullYear() +
+        " as month 1 and use the last day of each month. Please check this against your Grant Agreement.");
+    }
+
+    var checked = rows.filter(function (r) { return r.checks.length; }).length;
+    var summary = rows.length + (rows.length === 1 ? " deliverable" : " deliverables") + " recognised.";
+    if (checked) summary += " " + checked + (checked === 1 ? " row needs" : " rows need") + " checking (marked in red).";
+    var p = document.createElement("p");
+    p.className = "hint";
+    p.textContent = summary;
+    messagesEl.appendChild(p);
+
+    var incomplete = parsed.skipped.filter(function (s) { return /\bD\s?\d+\.\d+\b/.test(s); });
+    var other = parsed.skipped.filter(function (s) { return !/\bD\s?\d+\.\d+\b/.test(s); });
+    if (incomplete.length) {
+      addWarning("This text contains a deliverable number but could not be read completely (a column may be missing or empty). It is NOT in the table below:", incomplete);
+    }
+    if (other.length) {
+      addWarning("This pasted text was not recognised as a deliverable and was left out (for example page numbers). Please check nothing is missing:", other);
+    }
+
+    rows.forEach(function (r) {
+      var n = readMonth(r.due);
+      r.date = (start && n !== null) ? dueDate(start, n) : null;
+    });
+
+    var shown = rows.slice();
+    if (sortEl.checked) {
+      shown.sort(function (a, b) {
+        if (!a.date && !b.date) return a.order - b.order;
+        if (!a.date) return 1;
+        if (!b.date) return -1;
+        return (a.date - b.date) || (a.order - b.order);
+      });
+    }
+
+    shown.forEach(function (r) {
+      var tr = document.createElement("tr");
+      cell(tr, r.code, "Deliverable No", "nowrap");
+      var nameTd = cell(tr, r.name, "Deliverable Name");
+      r.checks.forEach(function (c) {
+        var d = document.createElement("div");
+        d.className = "check";
+        d.textContent = "Check: " + c;
+        nameTd.appendChild(d);
+      });
+      cell(tr, r.wp, "Work Package No", "nowrap");
+      cell(tr, r.lead, "Lead Beneficiary");
+      cell(tr, r.type, "Type");
+      cell(tr, r.diss, "Dissemination level");
+      cell(tr, r.due, "Due month (as pasted)", "nowrap");
+      var td = document.createElement("td");
+      td.setAttribute("data-label", "Due date (calculated)");
+      if (r.date) {
+        td.className = "date";
+        var t = document.createElement("time");
+        t.dateTime = isoDate(r.date);
+        t.textContent = formatDate(r.date);
+        td.appendChild(t);
+      } else if (start) {
+        td.className = "unclear";
+        td.textContent = "Unclear: not calculated";
+      } else {
+        td.textContent = "–";
+      }
+      tr.appendChild(td);
+      resultBody.appendChild(tr);
+    });
+    shownRows = shown;
+
+    emptyEl.classList.add("hidden");
+    resultArea.classList.remove("hidden");
+  }
+
+  // ---------- Events ----------
+
+  // When the clipboard holds a real table (Word, Excel, some PDF viewers),
+  // keep cell borders apart as tabs and rows as line breaks.
+  // DOMParser does not run scripts; only plain text is read.
+  pasteEl.addEventListener("paste", function (e) {
+    var cd = e.clipboardData;
+    var html = cd ? cd.getData("text/html") : "";
+    if (!html) return;
+    var doc = new DOMParser().parseFromString(html, "text/html");
+    var table = doc.querySelector("table");
+    if (!table) return;
+    e.preventDefault();
+    table.querySelectorAll("script, style").forEach(function (el) { el.remove(); });
+    table.querySelectorAll("br, p, div, li").forEach(function (el) { el.after(doc.createTextNode(" ")); });
+    var lines = [];
+    table.querySelectorAll("tr").forEach(function (tr) {
+      var cells = [];
+      tr.querySelectorAll("th, td").forEach(function (td) { cells.push(flatten(td.textContent)); });
+      lines.push(cells.join("\t"));
+    });
+    pasteEl.value = lines.join("\n");
+    render();
+  });
+
+  pasteEl.addEventListener("input", render);
+  startEl.addEventListener("input", render);
+  sortEl.addEventListener("change", render);
+
+  document.getElementById("example").addEventListener("click", function () {
+    startEl.value = "2026-01-01";
+    // A made-up table, pasted the way a PDF often scatters it: one cell per line.
+    pasteEl.value = [
+      "Deliverable No", "Deliverable Name", "Work Package No", "Lead Beneficiary", "Type",
+      "Dissemination level", "Due Date (in months)",
+      "D1.1", "Project handbook", "(example)", "WP1", "1 - EXA", "R — Document, report", "PU - Public", "M3",
+      "D2.1", "Stakeholder", "workshop report (example)", "WP2", "3 - UNIX", "R — Document, report", "SEN - Sensitive", "M06",
+      "D5.1", "Project website (example)", "WP5", "1 - EXA", "DEC —Websites, patent", "filings, videos, etc.", "PU - Public", "4",
+      "D5.2", "Project video (example)", "WP5", "2 - ORG2", "DEC —Websites, patent filings, videos, etc.", "PU - Public", "18",
+      "D3.1", "Final report (example)", "WP3", "4 - LAB", "R — Document, report", "PU - Public", "M36"
+    ].join("\n");
+    render();
+  });
+
+  document.getElementById("clear").addEventListener("click", function () {
+    pasteEl.value = "";
+    render();
+  });
+
+  document.getElementById("copy").addEventListener("click", function () {
+    var lines = [["Deliverable No", "Deliverable Name", "Work Package No", "Lead Beneficiary", "Type",
+      "Dissemination level", "Due month (as pasted)", "Due date (calculated)"].join("\t")];
+    shownRows.forEach(function (r) {
+      lines.push([r.code, r.name, r.wp, r.lead, r.type, r.diss, r.due, r.date ? isoDate(r.date) : "unclear"].join("\t"));
+    });
+    function done(ok) {
+      copyStatus.textContent = ok ? "Copied. Paste it into Excel or Word." : "Copying failed. Select the table and copy it by hand.";
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(lines.join("\n")).then(function () { done(true); }, function () { done(false); });
+    } else {
+      done(false);
+    }
+  });
+})();
+</script>
+</body>
+</html>
