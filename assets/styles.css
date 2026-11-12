@@ -283,8 +283,8 @@ textarea { min-height: 150px; resize: vertical; }
 
 /* Phones: keep both hero buttons visible on the first screen, side by side */
 @media (max-width: 760px) {
-  .hero { padding: 24px 0 40px; }
-  .hero .badge { margin-bottom: 14px; font-size: .82rem; padding: 6px 12px; }
+  .hero { padding: 52px 0 44px; }
+  .hero .badge { margin-bottom: 18px; font-size: .82rem; padding: 6px 12px; }
   .hero h1 { font-size: 1.85rem; margin-bottom: .35em; }
   .hero .tagline { font-size: 1rem; margin-bottom: .6em; }
   .hero .lead { font-size: 1rem; line-height: 1.5; }
