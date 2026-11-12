@@ -280,3 +280,20 @@ textarea { min-height: 150px; resize: vertical; }
 .tool-card { display: flex; align-items: center; justify-content: space-between; gap: 32px; border-top: 4px solid var(--green); }
 .tool-card > div { max-width: 680px; }
 @media (max-width: 760px) { .tool-card { flex-direction: column; align-items: flex-start; } }
+
+/* Phones: keep both hero buttons visible on the first screen, side by side */
+@media (max-width: 760px) {
+  .hero { padding: 24px 0 40px; }
+  .hero .badge { margin-bottom: 14px; font-size: .82rem; padding: 6px 12px; }
+  .hero h1 { font-size: 1.85rem; margin-bottom: .35em; }
+  .hero .tagline { font-size: 1rem; margin-bottom: .6em; }
+  .hero .lead { font-size: 1rem; line-height: 1.5; }
+  .hero .actions {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px;
+  }
+  .hero .actions .btn {
+    width: 100%; padding: 11px 8px; font-size: .95rem; line-height: 1.25;
+    text-align: center; align-items: center;
+  }
+  .hero .actions .btn small { font-size: .72rem; }
+}
