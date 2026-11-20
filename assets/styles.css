@@ -297,3 +297,53 @@ textarea { min-height: 150px; resize: vertical; }
   }
   .hero .actions .btn small { font-size: .72rem; }
 }
+
+/* Proposal review: service card on the home page */
+.card.wide { grid-column: 1 / -1; }
+.review-card { display: flex; align-items: center; justify-content: space-between; gap: 32px; border-top: 4px solid var(--blue); }
+.review-card > div { max-width: 680px; }
+
+/* Proposal review page */
+.page-hero { padding: 64px 0 48px; }
+.page-hero h1 { max-width: 760px; }
+.price-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: stretch; }
+.price-card h3 { font-size: 1.2rem; }
+.price { font-size: 2.2rem; font-weight: 800; color: var(--blue); margin: 4px 0 16px; line-height: 1.1; }
+.price span { display: block; font-size: .85rem; font-weight: 500; color: var(--muted); margin-top: 4px; }
+.price-card.addon { background: var(--tint); }
+.checks { list-style: none; padding: 0; margin: 0; }
+.checks li { position: relative; padding: 8px 0 8px 30px; border-bottom: 1px solid var(--line); }
+.checks li::before {
+  content: ""; position: absolute; left: 2px; top: 15px; width: 14px; height: 8px;
+  border-left: 3px solid var(--green); border-bottom: 3px solid var(--green); transform: rotate(-45deg);
+}
+.deadline-card { border-left: 4px solid var(--green); }
+.deadline-card p:last-child { margin-bottom: 0; font-size: 1.1rem; }
+.cta { text-align: center; }
+.cta .actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; margin-top: 20px; }
+.cta .actions .btn { display: inline-flex; flex-direction: column; justify-content: center; }
+
+/* Long menu: switch to the "Menu" button below 1100px */
+@media (max-width: 1100px) {
+  .menu-toggle { display: block; }
+  .nav {
+    display: none; position: absolute; top: 104px; left: 0; right: 0;
+    flex-direction: column; align-items: flex-start; gap: 0;
+    background: var(--white); border-bottom: 1px solid var(--line); padding: 8px 20px 16px;
+  }
+  .nav.open { display: flex; }
+  .nav > a { padding: 10px 0; width: 100%; }
+  .nav .lang { margin-top: 8px; }
+}
+@media (max-width: 920px) {
+  .price-cards { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .nav { top: 88px; }
+  .review-card { flex-direction: column; align-items: flex-start; }
+  .page-hero { padding: 40px 0 32px; }
+  .cta .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cta .actions .btn { padding: 11px 8px; font-size: .95rem; text-align: center; }
+  .cta .actions .btn small { font-size: .72rem; }
+}
+.nav a[aria-current="page"] { color: var(--blue); text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 2px; }

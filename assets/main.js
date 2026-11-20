@@ -79,3 +79,22 @@ var WEB3FORMS_ACCESS_KEY = "8f35dcb2-6664-4f77-8c92-a34f6c67182f";
       .finally(function () { button.disabled = false; });
   });
 })();
+
+// Proposal review page: "Next deadline" block.
+// - Hidden automatically once the "book by" date has passed (end of that day, Berlin time).
+// - data-slots="0" switches the text to "all slots taken".
+(function () {
+  var box = document.getElementById("next-deadline");
+  if (!box) return;
+  var bookBy = box.getAttribute("data-book-by");
+  if (bookBy && new Date() > new Date(bookBy + "T23:59:59+01:00")) {
+    box.hidden = true;
+    return;
+  }
+  if (box.getAttribute("data-slots") === "0") {
+    var open = box.querySelector(".deadline-open");
+    var full = box.querySelector(".deadline-full");
+    if (open) open.hidden = true;
+    if (full) full.hidden = false;
+  }
+})();
