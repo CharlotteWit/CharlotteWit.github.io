@@ -347,3 +347,8 @@ textarea { min-height: 150px; resize: vertical; }
   .cta .actions .btn small { font-size: .72rem; }
 }
 .nav a[aria-current="page"] { color: var(--blue); text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 2px; }
+
+/* Downloads: one card per document, button at the bottom */
+.download-card { display: flex; flex-direction: column; justify-content: space-between; gap: 18px; }
+.download-card .btn { align-self: flex-start; }
+.download-card h3 { font-size: 1.15rem; }
